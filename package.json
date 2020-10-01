@@ -1,15 +1,16 @@
 {
   "name": "ascsi",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --inspect example.js"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "xml": "^1.0.1"
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   },
-  "devDependencies": {},
   "description": ""
 }
