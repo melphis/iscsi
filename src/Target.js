@@ -30,6 +30,10 @@ class Target {
 
     return content + "\n</target>\n";
   }
+
+  setParams(params) {
+    this.params = params.map((param) => new Param(param));
+  }
 }
 
 module.exports = Target;

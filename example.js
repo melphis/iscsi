@@ -10,6 +10,7 @@ Iscsi.readFile('./conf/test_target.conf')
       }
     ];
 
+    // добавление таргета с автоматическим сохранением iscsi конфига
     iscsi.addRawTarget('iqn.2020-09.domain.ru:test-lun-2', targetParsms, true);
 
     // запись по пути чтения конфига

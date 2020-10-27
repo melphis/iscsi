@@ -60,11 +60,10 @@ class Iscsi {
       throw new Error(`Target with name ${name} already exist`);
     }
 
-    params = params.map((param) => new Param(param));
+    const target = new Target({ name });
+    target.setParams(params);
 
-    this.targets.push(
-      new Target({ name, params })
-    )
+    this.targets.push(target);
 
     autoSave && this.save();
   }
