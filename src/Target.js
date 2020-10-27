@@ -4,12 +4,14 @@ const regexp = /<target\s(.+?)>([\s\S]+)?<\/target>/;
 class Target {
   constructor(data = {}) {
     this.name = data.name;
+    this.lun = data.lun;
     this.params = data.params;
   }
 
   static parse(config) {
     const [, name, content] = config.match(regexp);
     let params;
+    const [, lun] = name.match(/:(.+)/);
 
     if (content) {
       params = content
@@ -19,7 +21,7 @@ class Target {
         .map((row) => Param.parse(row));
     }
 
-    return new Target({ name, params });
+    return new Target({ name, lun, params });
   }
 
   serialize() {
