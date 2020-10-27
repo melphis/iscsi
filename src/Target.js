@@ -2,23 +2,24 @@ const Param = require('./Param');
 const regexp = /<target\s(.+?)>([\s\S]+)?<\/target>/;
 
 class Target {
-  constructor(config) {
-    this.name = undefined;
-    this.params = [];
+  constructor(data = {}) {
+    this.name = data.name;
+    this.params = data.params;
+  }
 
+  static parse(config) {
     const [, name, content] = config.match(regexp);
-
-    if (name) {
-      this.name = name;
-    }
+    let params;
 
     if (content) {
-      this.params = content
+      params = content
         .split(/\n/)
-        // Фильтрация текстового комментария вида '# comment'
+        // Фильтрация текстового комментария вида '# comment' где # с самого начала строки
         .filter((row) => row.length && !/^#\s/.test(row))
-        .map((row) => new Param(row));
+        .map((row) => Param.parse(row));
     }
+
+    return new Target({ name, params });
   }
 
   serialize() {

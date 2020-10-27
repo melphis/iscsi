@@ -22,7 +22,17 @@ Param {
   enabled: false
 }
 ```
+
+### Добавление target
+```
+iscsi.addRawTarget('iqn.2020-09.domain.ru:test-lun-2', targetParsms, true);
+```
+Последний аргумент {boolean} [autoSave=false] - необходимо ли сразу сохранить
+все изменения в iscsi. 
+
 ### Запись
-`iscsi.writeTo('./tgt/xyi.conf');`
- можно вызывать без аргумента, тогда будет использоваться тот путь, который
- был указан при чтении конфига.
+Сохранение в файл
+`iscsi.saveTo('./tgt/xyi.conf');`
+
+Сохранение в файл, указанный при считывании 
+`iscsi.save();`

@@ -1,5 +1,6 @@
 const fs = require('fs');
-const Target = require('./Target')
+const Target = require('./Target');
+const Param = require('./Param');
 
 class Iscsi {
   constructor() {
@@ -7,7 +8,7 @@ class Iscsi {
     this.pathToFile = undefined;
   }
 
-  static readFile(pathToFile) {
+  async static readFile(pathToFile) {
     return new Promise((resolve, reject) => {
       const self = new Iscsi();
       self.pathToFile = pathToFile;
@@ -19,25 +20,68 @@ class Iscsi {
         }
 
         const targetsRaw = data.match(/<target(.|\s)*?\/target>/g);
-        self.targets = targetsRaw.map((t) => new Target(t));
+        self.targets = targetsRaw.map((t) => Target.parse(t));
 
         resolve(self);
       });
     });
   }
 
-  /**
-   *
-   * @param {string} [pathToFile=this.pathToFile]
-   */
-  writeTo(pathToFile) {
+  saveTo(pathToFile) {
     let content = '';
 
     this.targets.forEach((target) => {
       content += target.serialize() + "\n";
     });
 
-    fs.writeFile(pathToFile || this.pathToFile, content, err => console.error(err));
+    fs.writeFile(pathToFile, content, err => console.error(err));
+  }
+
+  save() {
+    if (!this.pathToFile) {
+      throw new Error('Set configuration path before save');
+    }
+
+    this.saveTo(this.pathToFile);
+  }
+
+  findTarget(name) {
+    return this.targets.find((target) => target.name === name);
+  }
+
+  /**
+   * Raw target adding
+   * @param name
+   * @param {object[]} params raw objects
+   * @param autoSave
+   */
+  addRawTarget(name, params, autoSave = false) {
+    if (this.findTarget(name)) {
+      throw new Error(`Target with name ${name} already exist`);
+    }
+
+    params = params.map((param) => new Param(param));
+
+    this.targets.push(
+      new Target({ name, params })
+    )
+
+    autoSave && this.save();
+  }
+
+  /**
+   * Removing target. Name or target.
+   * @param {string|Target} name
+   */
+  removeTarget(name) {
+    let target = name;
+
+    if (typeof(name) === 'string') {
+      target = this.findTarget(name);
+    }
+
+    const index = this.targets.indexOf(target);
+    this.targets.splice(index, 1);
   }
 }
 

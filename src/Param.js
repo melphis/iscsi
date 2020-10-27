@@ -1,15 +1,21 @@
 class Param {
-  constructor(row) {
-    const [name, ...params] = row.match(/\S+/g);
+  constructor(data = {}) {
+    this.name = data.name;
+    this.args = data.args;
+    this.enabled = data.enabled;
+  }
 
-    this.name = name.replace(/^#/, '');
-    this.arguments = params;
-    this.enabled = name.indexOf('#') !== 0;
+  static parse(row) {
+    const [name, ...args] = row.match(/\S+/g);
+
+    return new Param({
+      name, args, enabled: name.indexOf('#') !== 0
+    });
   }
 
   serialize() {
     const ds = this.enabled ? '' : '#';
-    return `${ds}${this.name} ${this.arguments.join(' ')}`;
+    return `${ds}${this.name} ${this.args.join(' ')}`;
   }
 }
 

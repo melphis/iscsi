@@ -6,11 +6,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --inspect example.js"
   },
-  "author": "",
+  "author": {
+    "name": "Melphis",
+    "email": "melphis.work@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
     "nodemon": "^2.0.4"
   },
-  "description": ""
+  "description": "Mapper for iscsi targets",
+  "keywords": [
+    "iscsi",
+    "target"
+  ]
 }
