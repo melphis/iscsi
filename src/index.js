@@ -34,15 +34,16 @@ class Iscsi {
   /**
    * Raw target adding
    * @param name
+   * @param lun
    * @param {object[]} params raw objects
    * @param autoSave
    */
-  addRawTarget(name, params, autoSave = false) {
+  addRawTarget(name, lun, params, autoSave = false) {
     if (this.findTarget(name)) {
       throw new Error(`Target with name ${name} already exist`);
     }
 
-    const target = new Target({ name });
+    const target = new Target({ name, lun });
     target.setParams(params);
 
     this.targets.push(target);

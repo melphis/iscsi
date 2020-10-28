@@ -1,8 +1,8 @@
 class Param {
-  constructor(data = {enabled: true}) {
+  constructor(data = {}) {
     this.name = data.name;
     this.args = data.args;
-    this.enabled = data.enabled;
+    this.enabled = typeof data.enabled === 'boolean' ? data.enabled : true;
   }
 
   static parse(row) {

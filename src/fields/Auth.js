@@ -23,6 +23,13 @@ class Auth {
     }
   }
 
+  toJson() {
+    return {
+      incomingUser: this.incomingUser ? this.incomingUser.toJson() : {},
+      outgoingUser: this.outgoingUser ? this.outgoingUser.toJson() : {},
+    }
+  }
+
   serialize() {
     let text = '';
 

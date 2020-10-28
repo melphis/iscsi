@@ -6,7 +6,7 @@ Iscsi.readFile('./conf/test_target.conf')
       {
         name: 'incominguser',
         // если enabled указать false, то в модели этот параметр не появится,
-        // только в общем списке параметров.
+        // только в общем списке параметров. По-умолчанию он true.
         args: [ 'tecmint-iscsi-user', 'password' ],
       },
       {
@@ -17,7 +17,7 @@ Iscsi.readFile('./conf/test_target.conf')
 
     // добавление таргета с автоматическим сохранением iscsi конфига
     // iscsi.addRawTarget('iqn.2020-09.domain.ru:test-lun-2', targetParams, true);
-    iscsi.addRawTarget('iqn.2020-09.domain.ru:test-lun-2', targetParams);
+    iscsi.addRawTarget('iqn.2020-09.domain.ru', 'test-lun-2', targetParams);
 
     console.log(iscsi.toJson());
 

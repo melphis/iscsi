@@ -1,5 +1,7 @@
-const Auth = require('./params/Auth');
-const BackingStore = require('./params/BackingStore');
+const Auth = require('./fields/Auth');
+const BackingStore = require('./fields/BackingStore');
+const IpFilter = require('./fields/IpFilter');
+const users = require('./fields/Users');
 const Param = require('./Param');
 
 const regexp = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
@@ -7,6 +9,7 @@ const regexp = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
 class Target {
   auth = undefined;
   backingStore = undefined;
+  ipFilter = undefined;
 
   constructor(data = {}) {
     this.name = data.name;
@@ -38,19 +41,18 @@ class Target {
 
     this._setAuth();
     this._setBackingStore();
+    this._setIpFilter();
   }
 
   _setAuth() {
     this.auth = new Auth(
-      this._getUserData('incominguser'),
-      this._getUserData('outgoinguser')
+      this._getUserData(users.IncomingUser.Name),
+      this._getUserData(users.OutgoingUser.Name)
     );
   }
 
   _getUserData(userType) {
-    const param = this.params.find(
-      (p) => p.enabled && p.name === userType
-    );
+    const param = this.findParam(userType);
 
     if (!param) {
       return;
@@ -63,10 +65,17 @@ class Target {
   }
 
   _setBackingStore() {
-    const param = this.params.find((p) => p.name === BackingStore.name);
+    const param = this.findParam(BackingStore.Name);
     const path = param ? param.args[0] : undefined;
 
     this.backingStore = new BackingStore(path);
+  }
+
+  _setIpFilter() {
+    const param = this.findParam(IpFilter.Name);
+    const ip = param ? param.args[0] : undefined;
+
+    this.ipFilter = new IpFilter(ip);
   }
 
   _serializeFields() {
@@ -85,20 +94,26 @@ class Target {
   serialize(serializeRawParams = false) {
     let content = `<target ${this.name}>\n`;
     content += serializeRawParams ? this._serializeRawParams() : this._serializeFields();
+
     return content + `</target>\n`;
   }
 
   /**
    * Форматирование в объект без params
-   * @returns {{lun: string, auth: Auth, backingStore: BackingStore, name: string}}
+   * @returns {{lun: string, auth: object, backingStore: string, name: string}}
    */
   toJson() {
     return {
-      auth: this.auth,
-      backingStore: this.backingStore,
       name: this.name,
       lun: this.lun,
+      auth: this.auth.toJson(),
+      backingStore: this.backingStore.arg,
+      ipFilter: this.ipFilter.arg,
     };
+  }
+
+  findParam(name) {
+    return this.params.find((p) => p.enabled && p.name === name);
   }
 
   setParams(params) {
