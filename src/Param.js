@@ -1,5 +1,5 @@
 class Param {
-  constructor(data = {}) {
+  constructor(data = {enabled: true}) {
     this.name = data.name;
     this.args = data.args;
     this.enabled = data.enabled;

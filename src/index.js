@@ -8,7 +8,7 @@ class Iscsi {
     this.pathToFile = undefined;
   }
 
-  async static readFile(pathToFile) {
+  static readFile(pathToFile) {
     return new Promise((resolve, reject) => {
       const self = new Iscsi();
       self.pathToFile = pathToFile;
@@ -25,24 +25,6 @@ class Iscsi {
         resolve(self);
       });
     });
-  }
-
-  saveTo(pathToFile) {
-    let content = '';
-
-    this.targets.forEach((target) => {
-      content += target.serialize() + "\n";
-    });
-
-    fs.writeFile(pathToFile, content, err => console.error(err));
-  }
-
-  save() {
-    if (!this.pathToFile) {
-      throw new Error('Set configuration path before save');
-    }
-
-    this.saveTo(this.pathToFile);
   }
 
   findTarget(name) {
@@ -81,6 +63,31 @@ class Iscsi {
 
     const index = this.targets.indexOf(target);
     this.targets.splice(index, 1);
+  }
+
+  toJson() {
+    return {
+      pathToFile: this.pathToFile,
+      targets: this.targets.map((target) => target.toJson()),
+    };
+  }
+
+  saveTo(pathToFile) {
+    let content = '';
+
+    this.targets.forEach((target) => {
+      content += target.serialize() + "\n";
+    });
+
+    fs.writeFile(pathToFile, content, err => console.error(err));
+  }
+
+  save() {
+    if (!this.pathToFile) {
+      throw new Error('Set configuration path before save');
+    }
+
+    this.saveTo(this.pathToFile);
   }
 }
 
