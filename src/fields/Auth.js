@@ -25,6 +25,7 @@ class Auth {
 
   toJson() {
     return {
+      type: this.type,
       incomingUser: this.incomingUser ? this.incomingUser.toJson() : {},
       outgoingUser: this.outgoingUser ? this.outgoingUser.toJson() : {},
     }
