@@ -101,7 +101,7 @@ class Target {
   }
 
   serialize(serializeRawParams = false) {
-    let content = `<target ${this.name}>\n`;
+    let content = `<target ${this.name}:${this.lun}>\n`;
     content += serializeRawParams ? this._serializeRawParams() : this._serializeFields();
 
     return content + `</target>\n`;
