@@ -1,18 +1,18 @@
 const fs = require('fs');
 const Target = require('./Target');
-const Param = require('./Param');
 
 class Iscsi {
-  constructor() {
-    this.targets = [];
-    this.pathToFile = undefined;
+  get targets() {
+    return this._targets;
+  }
+
+  constructor(path, targets = []) {
+    this.pathToFile = path;
+    this._targets = targets;
   }
 
   static readFile(pathToFile) {
     return new Promise((resolve, reject) => {
-      const self = new Iscsi();
-      self.pathToFile = pathToFile;
-
       fs.readFile(pathToFile, 'utf8', (err, data) => {
         if (err) {
           reject(err);
@@ -20,9 +20,9 @@ class Iscsi {
         }
 
         const targetsRaw = data.match(/<target(.|\s)*?\/target>/g);
-        self.targets = targetsRaw.map((t) => Target.parse(t));
+        const targets = targetsRaw.map((t) => Target.parse(t));
 
-        resolve(self);
+        resolve( new Iscsi(pathToFile, targets) );
       });
     });
   }
