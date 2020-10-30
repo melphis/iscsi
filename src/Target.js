@@ -34,6 +34,15 @@ class Target {
     return new Target({ name, lun, params });
   }
 
+  static fromJson(data) {
+    const target = new Target(data);
+    target.backingStore = new BackingStore(data.backingStore);
+    target.ipFilter = new IpFilter(data.ipFilter);
+    target.auth = new Auth(data.auth.incomingUser, data.auth.outgoingUser);
+
+    return target;
+  }
+
   _mapParams() {
     if (!this.params) {
       return;
@@ -116,6 +125,10 @@ class Target {
     return this.params.find((p) => p.enabled && p.name === name);
   }
 
+  /**
+   * Внимание! Все ссылки на поля класса будут обновлены.
+   * @param params
+   */
   setParams(params) {
     this.params = params.map((param) => new Param(param));
     this._mapParams();

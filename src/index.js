@@ -27,6 +27,13 @@ class Iscsi {
     });
   }
 
+  static fromJson(path, targets) {
+    return new Iscsi(
+      path,
+      targets.map(target => Target.fromJson(target))
+    );
+  }
+
   findTarget(name) {
     return this.targets.find((target) => target.name === name);
   }
