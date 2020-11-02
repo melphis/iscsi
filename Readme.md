@@ -11,10 +11,15 @@ Iscsi.readFile('./tgt/test_target.conf')
 ##### result:
 ```
 Target {
-    name: 'iqn.2020-09.signaltec.ru:test-lun-10',
+    name: 'iqn.2020-09.domain.ru',
+    lun: 'test-lun-10',
+    auth: Auth,
+    backingStore: BackingStore,
+    ipFilter: IpFilter,
     params: [ [Param], [Param], [Param], [Param] ]
 },
 ```
+
 ```
 Param {
   name: 'initiator-address',
