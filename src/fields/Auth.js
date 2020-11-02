@@ -1,24 +1,28 @@
 const {IncomingUser, OutgoingUser} = require('./Users');
 
-class Auth {
-  static TYPE = {
-    NONE: 0,
-    CHAP: 1,
-    TWO_WAY: 2,
-  };
+const TYPE = {
+  NONE: 0,
+  CHAP: 1,
+  TWO_WAY: 2,
+};
 
-  incomingUser = undefined;
-  outgoingUser = undefined;
-  type = Auth.TYPE.NONE;
+class Auth {
+  static get TYPE() {
+    return TYPE;
+  }
 
   constructor(incoming, outgoing) {
+    this.incomingUser = undefined;
+    this.outgoingUser = undefined;
+    this.type = TYPE.NONE;
+    
     if (incoming) {
       this.incomingUser = new IncomingUser(incoming.username, incoming.password);
-      this.type = Auth.TYPE.CHAP;
+      this.type = TYPE.CHAP;
 
       if (outgoing) {
         this.outgoingUser = new OutgoingUser(outgoing.username, outgoing.password);
-        this.type = Auth.TYPE.TWO_WAY;
+        this.type = TYPE.TWO_WAY;
       }
     }
   }

@@ -3,12 +3,16 @@ const incomingName = 'incominguser';
 const outgoingName = 'outgoinguser';
 
 class IncomingUser extends Field {
-  static Name = incomingName;
-  name = incomingName;
+  static get Name() {
+    return incomingName;
+  };
+
+  get name() {
+    return incomingName;
+  };
 
   constructor(username, password) {
     super();
-
     this.username = username;
     this.password = password;
   }
@@ -26,8 +30,12 @@ class IncomingUser extends Field {
 }
 
 class OutgoingUser extends IncomingUser {
-  static Name = outgoingName;
-  name = outgoingName;
+  static get Name() {
+    return outgoingName;
+  };
+  get name() {
+    return outgoingName;
+  };
 }
 
 module.exports = {IncomingUser, OutgoingUser};

@@ -7,14 +7,14 @@ const Param = require('./Param');
 const regexp = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
 
 class Target {
-  auth = undefined;
-  backingStore = undefined;
-  ipFilter = undefined;
 
   constructor(data = {}) {
     this.name = data.name;
     this.lun = data.lun;
     this.params = data.params;
+    this.auth = undefined;
+    this.backingStore = undefined;
+    this.ipFilter = undefined;
 
     this._mapParams();
   }
