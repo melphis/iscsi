@@ -10,15 +10,37 @@ Iscsi.readFile('./tgt/test_target.conf')
 ```
 ##### result:
 ```
-Target {
+[ Target {
     name: 'iqn.2020-09.domain.ru',
     lun: 'test-lun-10',
-    auth: Auth,
-    backingStore: BackingStore,
-    ipFilter: IpFilter,
+    auth: [Auth],
+    backingStore: [BackingStore],
+    ipFilter: [IpFilter],
     params: [ [Param], [Param], [Param], [Param] ]
-},
+}, ...]
 ```
+
+### Создание из объекта и сериализация в объект
+```
+Iscsi.fromJson({
+    name: 'iqn.2020-09.domain.ru',
+    lun: 'test-lun-10',
+    auth: {
+        type: 2,
+        incomingUser: {username, password},
+        outgoingUser: {username, password}
+    },
+    backingStore: '/dev/xyi',
+    ipFilter: '1.1.1.1',
+})
+
+Iscsi.toJson()
+```
+
+#### Типы авторизации
+* None - 0
+* Chap - 1
+* TwoWay - 2
 
 ```
 Param {
