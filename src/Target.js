@@ -90,6 +90,7 @@ class Target {
   _serializeFields() {
     let content = this.auth.serialize();
     content += this.backingStore.serialize();
+    content += this.ipFilter.serialize();
 
     return content;
   }
