@@ -25,6 +25,7 @@ Iscsi.readFile('./conf/test_target.conf')
     // iscsi.save();
 
     // запись по произвольному пути
-    iscsi.saveTo('./conf/xyi.conf');
+    iscsi.saveTo('./conf/xyi.conf')
+      .catch(console.error);
   })
-  .catch(err => console.error(err));
+  .catch(console.error);

@@ -87,7 +87,11 @@ class Iscsi {
       content += target.serialize() + "\n";
     });
 
-    fs.writeFile(pathToFile, content, err => console.error(err));
+    return new Promise((resolve, reject) => {
+      fs.writeFile(pathToFile, content, (err) => {
+        err ?  reject(err) : resolve();
+      });
+    });
   }
 
   save() {
@@ -95,7 +99,7 @@ class Iscsi {
       throw new Error('Set configuration path before save');
     }
 
-    this.saveTo(this.pathToFile);
+    return this.saveTo(this.pathToFile);
   }
 }
 
