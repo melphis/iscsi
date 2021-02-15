@@ -27,7 +27,7 @@ class Target {
       params = content
         .split(/\n/)
         // Фильтрация текстового комментария вида '# comment' где # с самого начала строки
-        .filter((row) => row.length && !/^#\s/.test(row))
+        .filter((row) => row.trim().length && !/^#\s/.test(row))
         .map((row) => Param.parse(row));
     }
 
