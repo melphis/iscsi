@@ -19,7 +19,7 @@ class Iscsi {
           return;
         }
 
-        const targetsRaw = data.match(/<target(.|\s)*?\/target>/g);
+        const targetsRaw = data.match(/<target(.|\s)*?\/target>/g) || [];
         const targets = targetsRaw.map((t) => Target.parse(t));
 
         resolve( new Iscsi(pathToFile, targets) );
