@@ -1,37 +1,44 @@
-const {IncomingUser, OutgoingUser} = require('./Users');
+import {IncomingUser, OutgoingUser, IUser} from './Users';
 
-class Auth {
-  static TYPE = {
-    NONE: 0,
-    CHAP: 1,
-    TWO_WAY: 2,
-  };
+enum TYPE {
+  NONE,
+  CHAP,
+  TWO_WAY,
+}
 
-  incomingUser = undefined;
-  outgoingUser = undefined;
-  type = Auth.TYPE.NONE;
+export interface IAuth {
+  type: TYPE;
+  incomingUser: IncomingUser | {};
+  outgoingUser: OutgoingUser | {};
+}
 
-  constructor(incoming, outgoing) {
+export class Auth implements IAuth{
+  static readonly TYPE = TYPE;
+  incomingUser: IncomingUser;
+  outgoingUser: OutgoingUser;
+  type = TYPE.NONE;
+
+  constructor(incoming?: IUser, outgoing?: IUser) {
     if (incoming) {
       this.incomingUser = new IncomingUser(incoming.username, incoming.password);
-      this.type = Auth.TYPE.CHAP;
+      this.type = TYPE.CHAP;
 
       if (outgoing) {
         this.outgoingUser = new OutgoingUser(outgoing.username, outgoing.password);
-        this.type = Auth.TYPE.TWO_WAY;
+        this.type = TYPE.TWO_WAY;
       }
     }
   }
 
-  toJson() {
+  toJson(): IAuth {
     return {
       type: this.type,
       incomingUser: this.incomingUser ? this.incomingUser.toJson() : {},
       outgoingUser: this.outgoingUser ? this.outgoingUser.toJson() : {},
-    }
+    };
   }
 
-  serialize() {
+  serialize(): string {
     let text = '';
 
     if (this.incomingUser) {
@@ -45,5 +52,3 @@ class Auth {
     return text;
   }
 }
-
-module.exports = Auth;

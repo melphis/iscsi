@@ -1,0 +1,33 @@
+{
+  /*
+    nodejs 14+
+    "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./dist"
+  },*/
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es2018",
+    "lib": ["es2018"],
+    "sourceMap": true,
+    "outDir": "./dist"
+  },
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "docs",
+    "public"
+  ]
+}

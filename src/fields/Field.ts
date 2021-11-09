@@ -1,20 +1,16 @@
-class Field {
+export default abstract class Field {
 
-  get name() {
+  get name(): string {
     throw new Error('Field `name` must be defined');
   }
 
-  static get Name() {
+  static get Name(): string {
     throw new Error('Static field `Name` must be defined');
   }
 
-  constructor(arg) {
-    this.arg = arg;
-  }
+  constructor(protected arg?: string) {}
 
-  serialize() {
+  serialize(): string {
     return !this.arg ? '' : `${this.name} ${this.arg}\n`;
   }
 }
-
-module.exports = Field;

@@ -1,11 +1,21 @@
-class Param {
-  constructor(data = {}) {
+interface IData {
+  name?: string;
+  args?: string[];
+  enabled?: boolean;
+}
+
+export default class Param {
+  name: string;
+  args: string[];
+  enabled: boolean;
+
+  constructor(data: IData = {}) {
     this.name = data.name;
     this.args = data.args;
     this.enabled = typeof data.enabled === 'boolean' ? data.enabled : true;
   }
 
-  static parse(row) {
+  static parse(row: string): Param {
     const [name, ...args] = row.match(/\S+/g);
 
     return new Param({
@@ -13,10 +23,8 @@ class Param {
     });
   }
 
-  serialize() {
+  serialize(): string {
     const ds = this.enabled ? '' : '#';
     return `${ds}${this.name} ${this.args.join(' ')}`;
   }
 }
-
-module.exports = Param;
