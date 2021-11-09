@@ -1,4 +1,4 @@
-const Iscsi = require('./src');
+const Iscsi = require('./dist/');
 
 Iscsi.readFile('./conf/test_target.conf')
   .then(iscsi => {

@@ -8,12 +8,11 @@ enum TYPE {
 
 export interface IAuth {
   type: TYPE;
-  incomingUser: IncomingUser | {};
-  outgoingUser: OutgoingUser | {};
+  incomingUser?: IUser;
+  outgoingUser?: IUser;
 }
 
 export class Auth implements IAuth{
-  static readonly TYPE = TYPE;
   incomingUser: IncomingUser;
   outgoingUser: OutgoingUser;
   type = TYPE.NONE;
@@ -33,8 +32,8 @@ export class Auth implements IAuth{
   toJson(): IAuth {
     return {
       type: this.type,
-      incomingUser: this.incomingUser ? this.incomingUser.toJson() : {},
-      outgoingUser: this.outgoingUser ? this.outgoingUser.toJson() : {},
+      incomingUser: this.incomingUser?.toJson(),
+      outgoingUser: this.outgoingUser?.toJson(),
     };
   }
 

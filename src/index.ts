@@ -31,7 +31,7 @@ class Iscsi {
     });
   }
 
-  static fromJson(path: string, targets: Target[]) {
+  static fromJson(path: string, targets: ITarget[]) {
     return new this(
       path,
       targets.map(target => Target.fromJson(target))
@@ -49,7 +49,7 @@ class Iscsi {
    * @param {object[]} params raw objects
    * @param autoSave
    */
-  addRawTarget(name, lun, params, autoSave = false) {
+  addRawTarget(name: string, lun: string, params: ITarget[], autoSave = false) {
     if (this.findTarget(name)) {
       throw new Error(`Target with name ${name} already exist`);
     }
@@ -100,7 +100,7 @@ class Iscsi {
 
   save() {
     if (!this._pathToFile) {
-      throw new Error('Set configuration path before save');
+      throw new Error('Set configuration path before save or use `saveTo`');
     }
 
     return this.saveTo(this._pathToFile);

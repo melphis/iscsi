@@ -1,8 +1,6 @@
 import {Auth, BackingStore, IpFilter, IncomingUser, OutgoingUser, IUser, IAuth} from './fields';
 import Param from './Param';
 
-const regexp = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
-
 interface IData {
   name?: string;
   lun?: string;
@@ -18,6 +16,8 @@ export interface ITarget {
 }
 
 export class Target {
+  static readonly REGEXP = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
+
   name: string;
   lun: string;
   params: Param[];
@@ -33,8 +33,8 @@ export class Target {
     this._mapParams();
   }
 
-  static parse(config): Target {
-    const [, name, lun, content] = config.match(regexp);
+  static parse(config: string): Target {
+    const [, name, lun, content] = config.match(this.REGEXP);
     let params: Param[];
 
     if (content) {
@@ -48,7 +48,7 @@ export class Target {
     return new Target({ name, lun, params });
   }
 
-  static fromJson(data): Target {
+  static fromJson(data: ITarget): Target {
     const target = new Target(data);
     target.backingStore = new BackingStore(data.backingStore);
     target.ipFilter = new IpFilter(data.ipFilter);
@@ -85,7 +85,7 @@ export class Target {
    * Внимание! Все ссылки на поля класса будут обновлены.
    * @param params
    */
-  setParams(params) {
+  setParams(params: ITarget[]) {
     this.params = params.map((param) => new Param(param));
     this._mapParams();
   }
@@ -134,7 +134,7 @@ export class Target {
     this.ipFilter = new IpFilter(ip);
   }
 
-  private _serializeFields() {
+  private _serializeFields(): string {
     let content = this.auth.serialize();
     content += this.backingStore.serialize();
     content += this.ipFilter.serialize();
@@ -142,7 +142,7 @@ export class Target {
     return content;
   }
 
-  private _serializeRawParams() {
+  private _serializeRawParams(): string {
     return this.params
       .map((param) => param.serialize())
       .join("\n");

@@ -4,7 +4,7 @@
 const Iscsi = require('iscsi');
 Iscsi.readFile('./tgt/test_target.conf')
   .then(iscsi => {
-    iscsi.writeTo('./tgt/xyi.conf');
+    iscsi.saveTo('./tgt/xyi.conf');
   })
   .catch(err => console.error(err));
 ```
