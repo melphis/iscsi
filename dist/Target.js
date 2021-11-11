@@ -16,7 +16,6 @@ class Target {
         if (content) {
             params = content
                 .split(/\n/)
-                // Фильтрация текстового комментария вида '# comment' где # с самого начала строки
                 .filter((row) => row.trim().length && !/^#\s/.test(row))
                 .map((row) => Param_1.default.parse(row));
         }
@@ -34,9 +33,6 @@ class Target {
         content += serializeRawParams ? this._serializeRawParams() : this._serializeFields();
         return content + `</target>\n`;
     }
-    /**
-     * Форматирование в объект без params
-     */
     toJson() {
         return {
             name: this.name,
@@ -49,10 +45,6 @@ class Target {
     findParam(name) {
         return this.params.find((p) => p.enabled && p.name === name);
     }
-    /**
-     * Внимание! Все ссылки на поля класса будут обновлены.
-     * @param params
-     */
     setParams(params) {
         this.params = params.map((param) => new Param_1.default(param));
         this._mapParams();

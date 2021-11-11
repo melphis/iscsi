@@ -1,85 +1,17 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
-const Target_1 = require("./Target");
-class Iscsi {
-    constructor(path, targets = []) {
-        this._pathToFile = path;
-        this._targets = targets;
-    }
-    get targets() {
-        return this._targets;
-    }
-    static readFile(pathToFile) {
-        return new Promise((resolve, reject) => {
-            (0, fs_1.readFile)(pathToFile, 'utf8', (err, data) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                const targetsRaw = data.match(/<target(.|\s)*?\/target>/g) || [];
-                const targets = targetsRaw.map((t) => Target_1.Target.parse(t));
-                resolve(new this(pathToFile, targets));
-            });
-        });
-    }
-    static fromJson(path, targets) {
-        return new this(path, targets.map(target => Target_1.Target.fromJson(target)));
-    }
-    findTarget(name) {
-        return this.targets.find((target) => target.name === name);
-    }
-    /**
-     * Raw target adding
-     * @param name
-     * @param lun
-     * @param {object[]} params raw objects
-     * @param autoSave
-     */
-    addRawTarget(name, lun, params, autoSave = false) {
-        if (this.findTarget(name)) {
-            throw new Error(`Target with name ${name} already exist`);
-        }
-        const target = new Target_1.Target({ name, lun });
-        target.setParams(params);
-        this.targets.push(target);
-        autoSave && this.save();
-    }
-    /**
-     * Removing target. Name or target.
-     * @param {string|Target} name
-     */
-    removeTarget(name) {
-        let target = name;
-        if (typeof (name) === 'string') {
-            target = this.findTarget(name);
-        }
-        const index = this.targets.indexOf(target);
-        this.targets.splice(index, 1);
-    }
-    toJson() {
-        return {
-            pathToFile: this._pathToFile,
-            targets: this.targets.map((target) => target.toJson()),
-        };
-    }
-    saveTo(pathToFile) {
-        let content = '';
-        this.targets.forEach((target) => {
-            content += target.serialize() + "\n";
-        });
-        return new Promise((resolve, reject) => {
-            (0, fs_1.writeFile)(pathToFile, content, (err) => {
-                err ? reject(err) : resolve();
-            });
-        });
-    }
-    save() {
-        if (!this._pathToFile) {
-            throw new Error('Set configuration path before save or use `saveTo`');
-        }
-        return this.saveTo(this._pathToFile);
-    }
-}
-module.exports = Iscsi;
+__exportStar(require("./Iscsi"), exports);
+__exportStar(require("./Param"), exports);
+__exportStar(require("./Target"), exports);
+__exportStar(require("./fields"), exports);
 //# sourceMappingURL=index.js.map

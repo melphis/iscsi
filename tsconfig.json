@@ -12,6 +12,7 @@
   },*/
   "compilerOptions": {
     "moduleResolution": "node",
+    "removeComments": true,
     "module": "commonjs",
     "target": "es2018",
     "lib": ["es2018"],
