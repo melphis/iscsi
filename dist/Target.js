@@ -17,7 +17,7 @@ class Target {
             params = content
                 .split(/\n/)
                 .filter((row) => row.trim().length && !/^#\s/.test(row))
-                .map((row) => Param_1.default.parse(row));
+                .map((row) => Param_1.Param.parse(row));
         }
         return new Target({ name, lun, params });
     }
@@ -46,7 +46,7 @@ class Target {
         return this.params.find((p) => p.enabled && p.name === name);
     }
     setParams(params) {
-        this.params = params.map((param) => new Param_1.default(param));
+        this.params = params.map((param) => new Param_1.Param(param));
         this._mapParams();
     }
     _mapParams() {

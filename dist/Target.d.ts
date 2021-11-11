@@ -1,5 +1,5 @@
 import { Auth, BackingStore, IpFilter, IAuth } from './fields';
-import Param from './Param';
+import { IParam, Param } from './Param';
 interface IData {
     name?: string;
     lun?: string;
@@ -26,7 +26,7 @@ export declare class Target {
     serialize(serializeRawParams?: boolean): string;
     toJson(): ITarget;
     findParam(name: any): Param;
-    setParams(params: ITarget[]): void;
+    setParams(params: IParam[]): void;
     private _mapParams;
     private _setAuth;
     private _getUserData;

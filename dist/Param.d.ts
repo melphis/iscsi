@@ -1,14 +1,13 @@
-interface IData {
+export interface IParam {
     name?: string;
     args?: string[];
     enabled?: boolean;
 }
-export default class Param {
+export declare class Param implements IParam {
     name: string;
     args: string[];
     enabled: boolean;
-    constructor(data?: IData);
+    constructor(data?: IParam);
     static parse(row: string): Param;
     serialize(): string;
 }
-export {};

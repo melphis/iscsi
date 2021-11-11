@@ -1,5 +1,5 @@
 import {Auth, BackingStore, IpFilter, IncomingUser, OutgoingUser, IUser, IAuth} from './fields';
-import Param from './Param';
+import {IParam, Param} from './Param';
 
 interface IData {
   name?: string;
@@ -35,7 +35,7 @@ export class Target {
 
   static parse(config: string): Target {
     const [, name, lun, content] = config.match(this.REGEXP);
-    let params: Param[];
+    let params: IParam[];
 
     if (content) {
       params = content
@@ -45,7 +45,7 @@ export class Target {
         .map((row): Param => Param.parse(row));
     }
 
-    return new Target({ name, lun, params });
+    return new Target({ name, lun, params } as IData);
   }
 
   static fromJson(data: ITarget): Target {
@@ -85,7 +85,7 @@ export class Target {
    * Внимание! Все ссылки на поля класса будут обновлены.
    * @param params
    */
-  setParams(params: ITarget[]) {
+  setParams(params: IParam[]) {
     this.params = params.map((param) => new Param(param));
     this._mapParams();
   }

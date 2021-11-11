@@ -1,15 +1,15 @@
-interface IData {
+export interface IParam {
   name?: string;
   args?: string[];
   enabled?: boolean;
 }
 
-export default class Param {
+export class Param implements IParam {
   name: string;
   args: string[];
   enabled: boolean;
 
-  constructor(data: IData = {}) {
+  constructor(data: IParam = {}) {
     this.name = data.name;
     this.args = data.args;
     this.enabled = typeof data.enabled === 'boolean' ? data.enabled : true;

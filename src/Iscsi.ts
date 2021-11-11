@@ -1,5 +1,6 @@
 import {readFile, writeFile} from 'fs';
 import {ITarget, Target} from './Target';
+import { IParam } from './Param';
 
 export class Iscsi {
 
@@ -46,10 +47,10 @@ export class Iscsi {
    * Raw target adding
    * @param name
    * @param lun
-   * @param {object[]} params raw objects
+   * @param params raw objects
    * @param autoSave
    */
-  addRawTarget(name: string, lun: string, params: ITarget[], autoSave = false) {
+  addRawTarget(name: string, lun: string, params: IParam[], autoSave = false) {
     if (this.findTarget(name)) {
       throw new Error(`Target with name ${name} already exist`);
     }
