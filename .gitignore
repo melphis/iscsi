@@ -1,5 +1,4 @@
 .idea/
 node_modules/
 conf/xyi.conf
-dist/
 package-lock.json
