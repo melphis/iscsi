@@ -1,5 +1,5 @@
 import { IncomingUser, OutgoingUser, IUser } from './Users';
-declare enum TYPE {
+export declare enum TYPE {
     NONE = 0,
     CHAP = 1,
     TWO_WAY = 2
@@ -17,4 +17,3 @@ export declare class Auth implements IAuth {
     toJson(): IAuth;
     serialize(): string;
 }
-export {};

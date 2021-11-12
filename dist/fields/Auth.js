@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Auth = void 0;
+exports.Auth = exports.TYPE = void 0;
 const Users_1 = require("./Users");
 var TYPE;
 (function (TYPE) {
     TYPE[TYPE["NONE"] = 0] = "NONE";
     TYPE[TYPE["CHAP"] = 1] = "CHAP";
     TYPE[TYPE["TWO_WAY"] = 2] = "TWO_WAY";
-})(TYPE || (TYPE = {}));
+})(TYPE = exports.TYPE || (exports.TYPE = {}));
 class Auth {
     constructor(incoming, outgoing) {
         this.type = TYPE.NONE;

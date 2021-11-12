@@ -1,6 +1,6 @@
 import {IncomingUser, OutgoingUser, IUser} from './Users';
 
-enum TYPE {
+export enum TYPE {
   NONE,
   CHAP,
   TWO_WAY,
