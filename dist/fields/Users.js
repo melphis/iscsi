@@ -1,15 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.OutgoingUser = exports.IncomingUser = void 0;
-const Field_1 = require("./Field");
+import Field from './Field';
 const incomingName = 'incominguser';
 const outgoingName = 'outgoinguser';
-class IncomingUser extends Field_1.default {
-    constructor(username, password) {
-        super();
-        this.username = username;
-        this.password = password;
-    }
+export class IncomingUser extends Field {
+    username;
+    password;
     static get Name() {
         return incomingName;
     }
@@ -18,6 +12,11 @@ class IncomingUser extends Field_1.default {
         return incomingName;
     }
     ;
+    constructor(username, password) {
+        super();
+        this.username = username;
+        this.password = password;
+    }
     toJson() {
         return {
             username: this.username,
@@ -28,8 +27,7 @@ class IncomingUser extends Field_1.default {
         return `${this.name} ${this.username} ${this.password}\n`;
     }
 }
-exports.IncomingUser = IncomingUser;
-class OutgoingUser extends IncomingUser {
+export class OutgoingUser extends IncomingUser {
     static get Name() {
         return outgoingName;
     }
@@ -39,5 +37,4 @@ class OutgoingUser extends IncomingUser {
     }
     ;
 }
-exports.OutgoingUser = OutgoingUser;
 //# sourceMappingURL=Users.js.map

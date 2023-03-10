@@ -1,7 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Param = void 0;
-class Param {
+export class Param {
+    name;
+    args;
+    enabled;
     constructor(data = {}) {
         this.name = data.name;
         this.args = data.args;
@@ -18,5 +18,4 @@ class Param {
         return `${ds}${this.name} ${this.args.join(' ')}`;
     }
 }
-exports.Param = Param;
 //# sourceMappingURL=Param.js.map

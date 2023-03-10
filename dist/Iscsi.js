@@ -1,31 +1,30 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Iscsi = void 0;
-const fs_1 = require("fs");
-const Target_1 = require("./Target");
-class Iscsi {
+import { readFile, writeFile } from 'fs';
+import { Target } from './Target';
+export class Iscsi {
+    _targets;
+    _pathToFile;
+    get targets() {
+        return this._targets;
+    }
     constructor(path, targets = []) {
         this._pathToFile = path;
         this._targets = targets;
     }
-    get targets() {
-        return this._targets;
-    }
     static readFile(pathToFile) {
         return new Promise((resolve, reject) => {
-            (0, fs_1.readFile)(pathToFile, 'utf8', (err, data) => {
+            readFile(pathToFile, 'utf8', (err, data) => {
                 if (err) {
                     reject(err);
                     return;
                 }
                 const targetsRaw = data.match(/<target(.|\s)*?\/target>/g) || [];
-                const targets = targetsRaw.map((t) => Target_1.Target.parse(t));
+                const targets = targetsRaw.map((t) => Target.parse(t));
                 resolve(new this(pathToFile, targets));
             });
         });
     }
     static fromJson(path, targets) {
-        return new this(path, targets.map(target => Target_1.Target.fromJson(target)));
+        return new this(path, targets.map(target => Target.fromJson(target)));
     }
     findTarget(name) {
         return this.targets.find((target) => target.name === name);
@@ -34,7 +33,7 @@ class Iscsi {
         if (this.findTarget(name)) {
             throw new Error(`Target with name ${name} already exist`);
         }
-        const target = new Target_1.Target({ name, lun });
+        const target = new Target({ name, lun });
         target.setParams(params);
         this.targets.push(target);
         autoSave && this.save();
@@ -59,7 +58,7 @@ class Iscsi {
             content += target.serialize() + "\n";
         });
         return new Promise((resolve, reject) => {
-            (0, fs_1.writeFile)(pathToFile, content, (err) => {
+            writeFile(pathToFile, content, (err) => {
                 err ? reject(err) : resolve();
             });
         });
@@ -71,5 +70,4 @@ class Iscsi {
         return this.saveTo(this._pathToFile);
     }
 }
-exports.Iscsi = Iscsi;
 //# sourceMappingURL=Iscsi.js.map

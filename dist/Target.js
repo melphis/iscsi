@@ -1,9 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Target = void 0;
-const fields_1 = require("./fields");
-const Param_1 = require("./Param");
-class Target {
+import { Auth, BackingStore, IpFilter, IncomingUser, OutgoingUser } from './fields';
+import { Param } from './Param';
+export class Target {
+    static REGEXP = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
+    name;
+    lun;
+    params;
+    auth;
+    backingStore;
+    ipFilter;
     constructor(data = {}) {
         this.name = data.name;
         this.lun = data.lun;
@@ -17,15 +21,15 @@ class Target {
             params = content
                 .split(/\n/)
                 .filter((row) => row.trim().length && !/^#\s/.test(row))
-                .map((row) => Param_1.Param.parse(row));
+                .map((row) => Param.parse(row));
         }
         return new Target({ name, lun, params });
     }
     static fromJson(data) {
         const target = new Target(data);
-        target.backingStore = new fields_1.BackingStore(data.backingStore);
-        target.ipFilter = new fields_1.IpFilter(data.ipFilter);
-        target.auth = new fields_1.Auth(data.auth.incomingUser, data.auth.outgoingUser);
+        target.backingStore = new BackingStore(data.backingStore);
+        target.ipFilter = new IpFilter(data.ipFilter);
+        target.auth = new Auth(data.auth.incomingUser, data.auth.outgoingUser);
         return target;
     }
     serialize(serializeRawParams = false) {
@@ -46,7 +50,7 @@ class Target {
         return this.params.find((p) => p.enabled && p.name === name);
     }
     setParams(params) {
-        this.params = params.map((param) => new Param_1.Param(param));
+        this.params = params.map((param) => new Param(param));
         this._mapParams();
     }
     _mapParams() {
@@ -58,7 +62,7 @@ class Target {
         this._setIpFilter();
     }
     _setAuth() {
-        this.auth = new fields_1.Auth(this._getUserData(fields_1.IncomingUser.Name), this._getUserData(fields_1.OutgoingUser.Name));
+        this.auth = new Auth(this._getUserData(IncomingUser.Name), this._getUserData(OutgoingUser.Name));
     }
     _getUserData(userType) {
         const param = this.findParam(userType);
@@ -71,14 +75,14 @@ class Target {
         };
     }
     _setBackingStore() {
-        const param = this.findParam(fields_1.BackingStore.Name);
+        const param = this.findParam(BackingStore.Name);
         const path = param ? param.args[0] : undefined;
-        this.backingStore = new fields_1.BackingStore(path);
+        this.backingStore = new BackingStore(path);
     }
     _setIpFilter() {
-        const param = this.findParam(fields_1.IpFilter.Name);
+        const param = this.findParam(IpFilter.Name);
         const ip = param ? param.args[0] : undefined;
-        this.ipFilter = new fields_1.IpFilter(ip);
+        this.ipFilter = new IpFilter(ip);
     }
     _serializeFields() {
         let content = this.auth.serialize();
@@ -92,6 +96,4 @@ class Target {
             .join("\n");
     }
 }
-exports.Target = Target;
-Target.REGEXP = /<target\s(.+?):(.+?)>([\s\S]+)?<\/target>/;
 //# sourceMappingURL=Target.js.map

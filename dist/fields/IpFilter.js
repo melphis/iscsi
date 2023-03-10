@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("./Field");
+import Field from './Field';
 const name = 'initiator-address';
-class IpFilter extends Field_1.default {
+export default class IpFilter extends Field {
     static get Name() {
         return name;
     }
@@ -15,5 +13,4 @@ class IpFilter extends Field_1.default {
         return this.arg;
     }
 }
-exports.default = IpFilter;
 //# sourceMappingURL=IpFilter.js.map
